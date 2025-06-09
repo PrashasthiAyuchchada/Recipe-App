@@ -5,7 +5,7 @@ import userRouter from './routes/userRouter.js';
 
 let app = express();
 
-mongoose.connect("mongodb+srv://admin:123@cluster0.l5mqf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(
+mongoose.connect("mongodb+srv://admin:123@cluster0.vqauv02.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(
     ()=>{
         console.log("connected to the database");
     }

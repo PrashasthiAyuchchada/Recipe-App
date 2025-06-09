@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 
 
 
+
 export function saveUSer(req,res){
 
 const hashedPassword = bcrypt.hashSync(req.body.password,10)
@@ -13,7 +14,8 @@ const user =new User (
         email : req.body.email,
         firstName : req.body.firstName,
         lastName : req.body.lastName,
-        password : hashedPassword
+        password : hashedPassword,
+        phone : req.body.phone
     }
 
 
@@ -25,6 +27,7 @@ user.save().then(()=>{
 }).catch(()=>{
     res.status(500).json({
         message : "User not saved"
+        
     })
 })
 
