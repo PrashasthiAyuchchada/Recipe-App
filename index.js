@@ -1,31 +1,36 @@
+// index.js
 import express from 'express';
-import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import userRouter from './routes/userRouter.js';
+import cors from 'cors';
 
-let app = express();
+import authRoutes from './routes/auth.js';
+import recipeRoutes from './routes/recipes.js';
 
-mongoose.connect("mongodb+srv://admin:123@cluster0.vqauv02.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(
-    ()=>{
-        console.log("connected to the database");
-    }
-).catch(
-    ()=>{
-        console.log("connection failed");
-    }
-)
+dotenv.config();
 
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.use (bodyParser.json());
+// Middleware
+app.use(cors());
+app.use(express.json());
 
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/recipes', recipeRoutes);
 
-
-app.use("/api/user",userRouter);
-
-
-
-app.listen(5000,()=>
-    {
-        console.log("server is runnig on port 5000");
-    }
-)
+// Connect to MongoDB and start server
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => {
+  console.log('MongoDB connected');
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+})
+.catch((err) => {
+  console.error('MongoDB connection error:', err);
+});
